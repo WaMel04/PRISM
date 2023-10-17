@@ -1,0 +1,3 @@
+name: MCUFriend
+main: io.github.wamel04.redismanager.proxy.ProxyInitializer
+version: '${project.version}'

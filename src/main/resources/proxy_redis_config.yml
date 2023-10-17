@@ -1,0 +1,7 @@
+# redis port
+port: "6379"
+
+# redis password
+password: ""
+
+

@@ -1,0 +1,4 @@
+name: RedisManager
+version: '${project.version}'
+main: io.github.wamel04.redismanager.bukkit.BukkitInitializer
+api-version: '1.20'
