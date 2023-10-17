@@ -8,20 +8,21 @@ import redis.clients.jedis.JedisPool;
 
 public class RedisManager {
 
-    public static JedisPool getBukkitJedisPool() {
-        return BukkitInitializer.getPool();
+    public static boolean isBukkit() {
+        try {
+            Class.forName("org.bukkit.plugin.java.JavaPlugin");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
-    public static Jedis getBukkitJedis() {
-        return getBukkitJedisPool().getResource();
+    public static JedisPool getJedisPool() {
+        return isBukkit() ? BukkitInitializer.getPool() : ProxyInitializer.getPool();
     }
 
-    public static JedisPool getProxyJedisPool() {
-        return ProxyInitializer.getPool();
-    }
-
-    public static Jedis getProxyJedis() {
-        return getProxyJedisPool().getResource();
+    public static Jedis getJedis() {
+        return getJedisPool().getResource();
     }
 
     public static Object loadObject(JedisPool jedisPool, String key, Class<?> clazz) {

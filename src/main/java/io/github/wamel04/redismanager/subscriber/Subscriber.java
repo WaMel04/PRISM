@@ -34,19 +34,24 @@ public class Subscriber extends JedisPubSub {
         return subscriberRunnable;
     }
 
-    public void setJedis(Jedis jedis) {
-        this.jedis = jedis;
-    }
+    public void register() {
+        jedis = RedisManager.getJedis();
+        subscriberMap.put(id, this);
 
-    public void start() {
-        try {
-            jedis.connect();
-            jedis.subscribe(this, channelName);
-        } catch (Exception e) {
+        if (RedisManager.isBukkit()) {
+            Bukkit.getScheduler().runTaskAsynchronously(BukkitInitializer.getInstance(), () -> {
+                jedis.connect();
+                jedis.subscribe(this, channelName);
+            });
+        } else {
+            ProxyInitializer.getInstance().getProxy().getScheduler().runAsync(ProxyInitializer.getInstance(), () -> {
+                jedis.connect();
+                jedis.subscribe(this, channelName);
+            });
         }
     }
 
-    public void stop() {
+    public void unregister() {
         this.unsubscribe();
         jedis.close();
     }
@@ -60,24 +65,10 @@ public class Subscriber extends JedisPubSub {
         subscriberRunnable.run(channelName, message);
     }
 
-    public static HashMap<String, Subscriber> subscriberMap = new HashMap<>();
+    private static HashMap<String, Subscriber> subscriberMap = new HashMap<>();
 
-    public static void registerBukkitSubscriber(Subscriber subscriber) {
-        subscriber.setJedis(RedisManager.getBukkitJedis());
-        subscriberMap.put(subscriber.getId(), subscriber);
-
-        Bukkit.getScheduler().runTaskAsynchronously(BukkitInitializer.getInstance(), () -> {
-            subscriber.start();
-        });
-    }
-
-    public static void registerProxySubscriber(Subscriber subscriber) {
-        subscriber.setJedis(RedisManager.getProxyJedis());
-        subscriberMap.put(subscriber.getId(), subscriber);
-
-        ProxyInitializer.getInstance().getProxy().getScheduler().runAsync(ProxyInitializer.getInstance(), () -> {
-            subscriber.start();
-        });
+    public static HashMap<String, Subscriber> getSubscriberMap() {
+        return subscriberMap;
     }
 
 }
