@@ -24,7 +24,10 @@ public class ProxyInitializer extends Plugin {
         jedisPoolConfig.setTestOnBorrow(true);
         jedisPoolConfig.setTestOnReturn(true);
 
-        pool = new JedisPool(jedisPoolConfig, "localhost", Integer.parseInt(RedisConfig.port), 1000 * 15, RedisConfig.password);
+        if (RedisConfig.password.equals(""))
+            pool = new JedisPool(jedisPoolConfig, "localhost", Integer.parseInt(RedisConfig.port), 1000 * 15);
+        else
+            pool = new JedisPool(jedisPoolConfig, "localhost", Integer.parseInt(RedisConfig.port), 1000 * 15, RedisConfig.password);
 
         try (Jedis jedis = pool.getResource()) {
             ScanParams scanParams = new ScanParams();
