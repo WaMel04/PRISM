@@ -15,6 +15,18 @@ public interface RediObject {
         return gson.toJson(this);
     }
 
+    default boolean isLoaded(String key) {
+        try (Jedis jedis = RedisManager.getJedis()) {
+            String data = jedis.get("redis_manager:" + getNameKey() + ":" + key);
+
+            return data != null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     default void load(String key) {
         Gson gson = new Gson();
 

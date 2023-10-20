@@ -1,9 +1,6 @@
 package io.github.wamel04.redismanager.subscriber;
 
 import io.github.wamel04.redismanager.RedisManager;
-import io.github.wamel04.redismanager.bukkit.BukkitInitializer;
-import io.github.wamel04.redismanager.proxy.ProxyInitializer;
-import org.bukkit.Bukkit;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
@@ -20,6 +17,7 @@ public class Subscriber extends JedisPubSub {
         this.id = id;
         this.channelName = channelName;
         this.subscriberRunnable = subscriberRunnable;
+        this.jedis = RedisManager.getJedis();
     }
 
     public String getId() {
@@ -35,25 +33,16 @@ public class Subscriber extends JedisPubSub {
     }
 
     public void register() {
-        jedis = RedisManager.getJedis();
         subscriberMap.put(id, this);
 
-        if (RedisManager.isBukkit()) {
-            Bukkit.getScheduler().runTaskAsynchronously(BukkitInitializer.getInstance(), () -> {
-                jedis.connect();
-                jedis.subscribe(this, channelName);
-            });
-        } else {
-            ProxyInitializer.getInstance().getProxy().getScheduler().runAsync(ProxyInitializer.getInstance(), () -> {
-                jedis.connect();
-                jedis.subscribe(this, channelName);
-            });
-        }
+        if (RedisManager.isBukkit())
+            BukkitSubscriberRegister.register(jedis, this);
+        else
+           ProxySubscriberRegister.register(jedis, this);
     }
 
     public void unregister() {
         this.unsubscribe();
-        jedis.close();
     }
 
     public void publish(String message) {

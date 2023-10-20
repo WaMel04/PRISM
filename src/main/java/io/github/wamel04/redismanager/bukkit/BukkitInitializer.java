@@ -1,6 +1,7 @@
 package io.github.wamel04.redismanager.bukkit;
 
 import io.github.wamel04.redismanager.bukkit.redis.RedisConfig;
+import io.github.wamel04.redismanager.subscriber.Subscriber;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -27,11 +28,17 @@ public final class BukkitInitializer extends JavaPlugin {
             pool = new JedisPool(jedisPoolConfig, RedisConfig.ip, Integer.parseInt(RedisConfig.port), 1000 * 15);
         else
             pool = new JedisPool(jedisPoolConfig, RedisConfig.ip, Integer.parseInt(RedisConfig.port), 1000 * 15, RedisConfig.password);
+
+        getCommand("rm_test").setExecutor(new RMCommand());
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        for (Subscriber subscriber : Subscriber.getSubscriberMap().values()) {
+            subscriber.unregister();
+        }
+
+        pool.close();
     }
 
     public static BukkitInitializer getInstance() {

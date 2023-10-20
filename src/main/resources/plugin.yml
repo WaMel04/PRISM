@@ -2,3 +2,7 @@ name: RedisManager
 version: '${project.version}'
 main: io.github.wamel04.redismanager.bukkit.BukkitInitializer
 api-version: '1.20'
+
+commands:
+  rm_test:
+    description: "RedisManger Test Command"
