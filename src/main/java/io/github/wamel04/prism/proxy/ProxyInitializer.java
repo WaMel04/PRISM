@@ -1,6 +1,9 @@
-package io.github.wamel04.redismanager.proxy;
+package io.github.wamel04.prism.proxy;
 
-import io.github.wamel04.redismanager.proxy.redis.RedisConfig;
+import io.github.wamel04.prism.proxy.listener.ProxyEventListener;
+import io.github.wamel04.prism.proxy.mysql.DbConnection;
+import io.github.wamel04.prism.proxy.mysql.MysqlConfig;
+import io.github.wamel04.prism.proxy.redis.RedisConfig;
 import net.md_5.bungee.api.plugin.Plugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -8,14 +11,20 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.params.ScanParams;
 import redis.clients.jedis.resps.ScanResult;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class ProxyInitializer extends Plugin {
 
     private static ProxyInitializer instance;
     private static JedisPool pool;
+    private static DbConnection dbConnection;
 
     public void onEnable() {
         instance = this;
+
         RedisConfig.load();
+        MysqlConfig.load();
 
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(0);
@@ -31,7 +40,7 @@ public class ProxyInitializer extends Plugin {
 
         try (Jedis jedis = pool.getResource()) {
             ScanParams scanParams = new ScanParams();
-            scanParams.match("redis_manager:*");
+            scanParams.match("prism:*");
 
             String cursor = "0";
             do {
@@ -42,10 +51,15 @@ public class ProxyInitializer extends Plugin {
                 cursor = scanResult.getCursor();
             } while (!cursor.equals("0"));
         }
+
+        dbConnection = new DbConnection();
+
+        getProxy().getPluginManager().registerListener(this, new ProxyEventListener());
     }
 
     public void onDisable() {
-
+        pool.close();
+        dbConnection.closeConnection();
     }
 
     public static ProxyInitializer getInstance() {
@@ -54,6 +68,16 @@ public class ProxyInitializer extends Plugin {
 
     public static JedisPool getPool() {
         return pool;
+    }
+
+    public static Connection getConnection() {
+        try {
+            return dbConnection.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

@@ -1,11 +1,13 @@
-package io.github.wamel04.redismanager;
+package io.github.wamel04.prism;
 
-import io.github.wamel04.redismanager.bukkit.BukkitInitializer;
-import io.github.wamel04.redismanager.proxy.ProxyInitializer;
+import io.github.wamel04.prism.bukkit.BukkitInitializer;
+import io.github.wamel04.prism.proxy.ProxyInitializer;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-public class RedisManager {
+import java.sql.Connection;
+
+public class PRISM {
 
     /**
      * 해당 쓰레드의 버킷 여부 를 반환합니다.
@@ -42,9 +44,17 @@ public class RedisManager {
         return getJedisPool().getResource();
     }
 
+    /**
+     * 해당 쓰레드의 적절한 Connection을 반환합니다.
+     * @return Connection
+     */
+    public static Connection getConnection() {
+        return isBukkit() ? BukkitInitializer.getConnection() : ProxyInitializer.getConnection();
+    }
+
     public static BukkitInitializer getBukkitInstance() {
         if (!isBukkit()) {
-            System.err.println("[RedisManager] 버킷에서만 사용할 수 있습니다.");
+            System.err.println("[PRISM] 버킷에서만 사용할 수 있습니다.");
             return null;
         }
 
@@ -53,7 +63,7 @@ public class RedisManager {
 
     public static ProxyInitializer getProxyInstance() {
         if (!isBukkit()) {
-            System.err.println("[RedisManager] 프록시에서만 사용할 수 있습니다.");
+            System.err.println("[PRISM] 프록시에서만 사용할 수 있습니다.");
             return null;
         }
 

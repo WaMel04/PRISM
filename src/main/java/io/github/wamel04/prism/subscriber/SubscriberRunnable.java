@@ -1,4 +1,4 @@
-package io.github.wamel04.redismanager.subscriber;
+package io.github.wamel04.prism.subscriber;
 
 public interface SubscriberRunnable {
 

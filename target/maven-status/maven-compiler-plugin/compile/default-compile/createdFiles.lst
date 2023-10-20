@@ -7,14 +7,15 @@ io\github\wamel04\prism\proxy\mysql\DbConnection.class
 io\github\wamel04\prism\bukkit\RMCommand.class
 io\github\wamel04\prism\proxy\listener\ProxyEventListener.class
 io\github\wamel04\prism\subscriber\BukkitSubscriberRegister.class
+io\github\wamel04\prism\prismplayer\PrismPlayer.class
 io\github\wamel04\prism\bukkit\BukkitInitializer.class
 io\github\wamel04\prism\bukkit\mysql\MysqlConfig.class
 io\github\wamel04\prism\example\CustomLocation.class
+io\github\wamel04\prism\prismobject\PrismObject.class
 io\github\wamel04\prism\proxy\ProxyInitializer.class
 io\github\wamel04\prism\subscriber\SubscriberRunnable.class
 io\github\wamel04\prism\bukkit\mysql\DbConnection.class
-io\github\wamel04\prism\rediobject\PrismObject.class
-io\github\wamel04\prism\redisplayer\PrismPlayer.class
+io\github\wamel04\prism\example\Example.class
 io\github\wamel04\prism\proxy\mysql\MysqlConfig.class
 io\github\wamel04\prism\DbManager.class
 io\github\wamel04\prism\subscriber\Subscriber.class

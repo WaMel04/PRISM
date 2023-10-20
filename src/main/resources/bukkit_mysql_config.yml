@@ -1,0 +1,17 @@
+# mysql ip
+ip: 127.0.0.1
+
+# mysql port
+port: "3306"
+
+# mysql database name
+database: prism
+
+# mysql username:
+username: root
+
+# mysql password
+password: "1234"
+
+# pool size
+poolsize: 10

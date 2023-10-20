@@ -1,6 +1,6 @@
-package io.github.wamel04.redismanager.subscriber;
+package io.github.wamel04.prism.subscriber;
 
-import io.github.wamel04.redismanager.RedisManager;
+import io.github.wamel04.prism.PRISM;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
@@ -17,7 +17,7 @@ public class Subscriber extends JedisPubSub {
         this.id = id;
         this.channelName = channelName;
         this.subscriberRunnable = subscriberRunnable;
-        this.jedis = RedisManager.getJedis();
+        this.jedis = PRISM.getJedis();
     }
 
     public String getId() {
@@ -35,7 +35,7 @@ public class Subscriber extends JedisPubSub {
     public void register() {
         subscriberMap.put(id, this);
 
-        if (RedisManager.isBukkit())
+        if (PRISM.isBukkit())
             BukkitSubscriberRegister.register(jedis, this);
         else
            ProxySubscriberRegister.register(jedis, this);

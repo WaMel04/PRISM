@@ -1,6 +1,6 @@
-package io.github.wamel04.redismanager.subscriber;
+package io.github.wamel04.prism.subscriber;
 
-import io.github.wamel04.redismanager.proxy.ProxyInitializer;
+import io.github.wamel04.prism.proxy.ProxyInitializer;
 import redis.clients.jedis.Jedis;
 
 public class ProxySubscriberRegister {

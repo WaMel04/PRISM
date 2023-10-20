@@ -1,21 +1,24 @@
-package io.github.wamel04.redismanager.proxy.redis;
+package io.github.wamel04.prism.bukkit.mysql;
 
-import io.github.wamel04.redismanager.proxy.ProxyInitializer;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
+import io.github.wamel04.prism.bukkit.BukkitInitializer;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
-public class RedisConfig {
+public class MysqlConfig {
 
-    private static ProxyInitializer plugin = ProxyInitializer.getInstance();
+    private static BukkitInitializer plugin = BukkitInitializer.getInstance();
 
-    private static final String CONFIG_NAME = "proxy_redis_config.yml";
+    private static final String CONFIG_NAME = "bukkit_mysql_config.yml";
 
+    public static String ip;
     public static String port;
+    public static String database;
+    public static String username;
     public static String password;
+    public static Integer poolsize;
 
     public static void create() {
         try {
@@ -29,7 +32,7 @@ public class RedisConfig {
 
             if (!configFile.exists()) {
                 FileOutputStream outputStream = new FileOutputStream(configFile);
-                InputStream in = plugin.getResourceAsStream(CONFIG_NAME);
+                InputStream in = plugin.getResource(CONFIG_NAME);
                 in.transferTo(outputStream);
 
                 plugin.getLogger().info(CONFIG_NAME + "을 생성했습니다.");
@@ -41,10 +44,8 @@ public class RedisConfig {
 
     public static Object get(String key) {
         File file = new File(plugin.getDataFolder(), CONFIG_NAME);
-
         try {
-            Configuration configuration = ConfigurationProvider.getProvider(net.md_5.bungee.config.YamlConfiguration.class).load(file);
-
+            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
             return configuration.get(key);
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,8 +57,12 @@ public class RedisConfig {
     public static void load() {
         create();
 
+        ip = (String) get("ip");
         port = (String) get("port");
+        database = (String) get("database");
+        username = (String) get("username");
         password = (String) get("password");
+        poolsize = (Integer) get("poolsize");
     }
 
 }

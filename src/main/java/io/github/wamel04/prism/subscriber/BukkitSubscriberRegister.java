@@ -1,6 +1,6 @@
-package io.github.wamel04.redismanager.subscriber;
+package io.github.wamel04.prism.subscriber;
 
-import io.github.wamel04.redismanager.bukkit.BukkitInitializer;
+import io.github.wamel04.prism.bukkit.BukkitInitializer;
 import org.bukkit.Bukkit;
 import redis.clients.jedis.Jedis;
 

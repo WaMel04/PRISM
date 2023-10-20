@@ -1,3 +1,5 @@
-name: RedisManager
-main: io.github.wamel04.redismanager.proxy.ProxyInitializer
+name: PRISM
+main: io.github.wamel04.prism.proxy.ProxyInitializer
 version: '${project.version}'
+description: Proxied Redis Integrated Synchronize Manager
+author: WaMel_

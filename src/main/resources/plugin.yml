@@ -1,7 +1,9 @@
-name: RedisManager
+name: PRISM
 version: '${project.version}'
-main: io.github.wamel04.redismanager.bukkit.BukkitInitializer
+main: io.github.wamel04.prism.bukkit.BukkitInitializer
 api-version: '1.20'
+description: Proxied Redis Integrated Synchronize Manager
+author: WaMel_
 
 commands:
   rm_test:
