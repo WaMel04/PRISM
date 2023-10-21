@@ -1,8 +1,8 @@
 package io.github.wamel04.prism.example;
 
-import io.github.wamel04.prism.prismobject.PrismObject;
+import io.github.wamel04.prism.util.PrismSerializable;
 
-public class House implements PrismObject {
+public class House implements PrismSerializable {
 
     String ownerUuid;
     CustomLocation customLocation;

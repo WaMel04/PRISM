@@ -1,5 +1,0 @@
-name: PRISM
-main: io.github.wamel04.prism.proxy.ProxyInitializer
-version: '1.0'
-description: Proxied Redis Integrated Synchronize Manager
-author: WaMel_

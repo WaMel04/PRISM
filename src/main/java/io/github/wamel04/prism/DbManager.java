@@ -120,7 +120,7 @@ public class DbManager {
                 try (ResultSet tables = dbMetaData.getTables(connection.getCatalog(), null, "%", new String[]{"TABLE"})) {
                     while (tables.next()) {
                         String tableName = tables.getString("TABLE_NAME").replace("ㅣ", ":");
-                        String redisKey = "prism:" + tableName + ":" + uuid;
+                        String redisKey = "prism_data:" + tableName + ":" + uuid;
 
                         try (Jedis jedis = PRISM.getJedis()) {
                             jedis.del(redisKey);

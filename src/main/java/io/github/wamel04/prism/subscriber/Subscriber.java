@@ -15,7 +15,7 @@ public class Subscriber extends JedisPubSub {
 
     public Subscriber(String id, String channelName, SubscriberRunnable subscriberRunnable) {
         this.id = id;
-        this.channelName = channelName;
+        this.channelName = "prism:" + channelName;
         this.subscriberRunnable = subscriberRunnable;
         this.jedis = PRISM.getJedis();
     }
@@ -38,7 +38,7 @@ public class Subscriber extends JedisPubSub {
         if (PRISM.isBukkit())
             BukkitSubscriberRegister.register(jedis, this);
         else
-           ProxySubscriberRegister.register(jedis, this);
+            ProxySubscriberRegister.register(jedis, this);
     }
 
     public void unregister() {
@@ -58,6 +58,10 @@ public class Subscriber extends JedisPubSub {
 
     public static HashMap<String, Subscriber> getSubscriberMap() {
         return subscriberMap;
+    }
+
+    public static Subscriber getSubscriber(String id) {
+        return subscriberMap.getOrDefault(id, null);
     }
 
 }

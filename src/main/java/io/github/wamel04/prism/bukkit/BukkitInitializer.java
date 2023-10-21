@@ -1,8 +1,12 @@
 package io.github.wamel04.prism.bukkit;
 
+import io.github.wamel04.prism.bukkit.listener.PrismPlayerListener;
 import io.github.wamel04.prism.bukkit.mysql.DbConnection;
 import io.github.wamel04.prism.bukkit.mysql.MysqlConfig;
+import io.github.wamel04.prism.bukkit.receiver_register.ReceiverRegister;
 import io.github.wamel04.prism.bukkit.redis.RedisConfig;
+import io.github.wamel04.prism.prism_object.PrismServer;
+import io.github.wamel04.prism.prism_object.subscriber_register.BukkitPrismSubscriberRegister;
 import io.github.wamel04.prism.subscriber.Subscriber;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.JedisPool;
@@ -16,6 +20,7 @@ public final class BukkitInitializer extends JavaPlugin {
     private static BukkitInitializer instance;
     private static JedisPool pool;
     private static DbConnection dbConnection;
+    private static PrismServer prismServer;
 
     @Override
     public void onEnable() {
@@ -36,9 +41,16 @@ public final class BukkitInitializer extends JavaPlugin {
         else
             pool = new JedisPool(jedisPoolConfig, RedisConfig.ip, Integer.parseInt(RedisConfig.port), 1000 * 15, RedisConfig.password);
 
+        BukkitPrismSubscriberRegister.start();
+        ReceiverRegister.start();
+
         dbConnection = new DbConnection();
 
+        prismServer = PrismServer.getByPort(getServer().getPort());
+
         getCommand("rm_test").setExecutor(new RMCommand());
+
+        initEventListeners();
     }
 
     @Override
@@ -67,6 +79,14 @@ public final class BukkitInitializer extends JavaPlugin {
         }
 
         return null;
+    }
+
+    public static PrismServer getPrismServer() {
+        return prismServer;
+    }
+
+    private void initEventListeners() {
+        getServer().getPluginManager().registerEvents(new PrismPlayerListener(), this);
     }
 
 }
