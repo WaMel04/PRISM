@@ -25,7 +25,7 @@ public class DbManager {
                                     String data = rs.getString("data");
 
                                     try (Jedis jedis = PRISM.getJedis()) {
-                                        jedis.publish("prism:" + tableName + ":" + uuid, data);
+                                        jedis.publish("prism:" + tableName.replace("ㅣ", ":") + ":" + uuid, data);
                                     }
                                 }
                             }
@@ -119,7 +119,7 @@ public class DbManager {
 
                 try (ResultSet tables = dbMetaData.getTables(connection.getCatalog(), null, "%", new String[]{"TABLE"})) {
                     while (tables.next()) {
-                        String tableName = tables.getString("TABLE_NAME");
+                        String tableName = tables.getString("TABLE_NAME").replace("ㅣ", ":");
                         String redisKey = "prism:" + tableName + ":" + uuid;
 
                         try (Jedis jedis = PRISM.getJedis()) {

@@ -26,6 +26,6 @@ public class House implements PrismObject {
 
     @Override
     public String getNameKey() {
-        return "house";
+        return "mcu:server:house";
     }
 }

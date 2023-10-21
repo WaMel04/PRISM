@@ -47,7 +47,7 @@ public interface PrismObject {
     }
 
     private CompletableFuture<Void> loadFromMysqlAndCache(String key, Gson gson) {
-        return DbManager.getAsync(key, getNameKey()).thenCompose(data -> {
+        return DbManager.getAsync(key, getNameKey().replace(":", "ㅣ")).thenCompose(data -> {
             String redisKey = "prism:" + getNameKey() + ":" + key;
 
             if (data != null) {
@@ -92,7 +92,7 @@ public interface PrismObject {
                 e.printStackTrace();
             }
 
-            DbManager.save(key, data, getNameKey());
+            DbManager.save(key, data, getNameKey().replace(":", "ㅣ"));
         }).exceptionally(ex -> {
             ex.printStackTrace();
             return null;
