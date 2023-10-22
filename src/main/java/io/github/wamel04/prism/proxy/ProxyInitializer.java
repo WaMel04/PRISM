@@ -8,6 +8,7 @@ import io.github.wamel04.prism.proxy.mysql.DbConnection;
 import io.github.wamel04.prism.proxy.mysql.MysqlConfig;
 import io.github.wamel04.prism.proxy.receiver_register.ReceiverRegister;
 import io.github.wamel04.prism.proxy.redis.RedisConfig;
+import io.github.wamel04.prism.subscriber.Subscriber;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 import redis.clients.jedis.Jedis;
@@ -84,6 +85,10 @@ public class ProxyInitializer extends Plugin {
     }
 
     public void onDisable() {
+        for (Subscriber subscriber : Subscriber.getSubscriberMap().values()) {
+            subscriber.unregister();
+        }
+
         pool.close();
         dbConnection.closeConnection();
     }

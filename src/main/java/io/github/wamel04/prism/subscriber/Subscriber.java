@@ -46,7 +46,9 @@ public class Subscriber extends JedisPubSub {
     }
 
     public void publish(String message) {
-        jedis.publish(channelName, message);
+        try (Jedis jedis1 = PRISM.getJedis()) {
+            jedis1.publish(channelName, message);
+        }
     }
 
     @Override

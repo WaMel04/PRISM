@@ -10,7 +10,11 @@ public class ProxyDisconnectSubscriber extends Subscriber {
         super("proxy_disconnect_subscriber", "proxy_disconnect", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                EventCaller.call("proxy_disconnect_event", message);
+                try {
+                    Class.forName("org.bukkit.plugin.java.JavaPlugin");
+                    EventCaller.call("proxy_disconnect_event", message);
+                } catch (ClassNotFoundException e) {
+                }
             }
         });
     }

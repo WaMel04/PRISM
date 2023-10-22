@@ -35,7 +35,8 @@ public class PP_TeleportReceiver extends Subscriber {
                     float yaw = Float.parseFloat(split[7]);
 
                     Location location = new Location(Bukkit.getWorld(worldName), x, y, z, pitch, yaw);
-                    player.teleport(location);
+
+                    Bukkit.getScheduler().runTask(BukkitInitializer.getInstance(), () -> player.teleport(location));
                 }
             }
         });

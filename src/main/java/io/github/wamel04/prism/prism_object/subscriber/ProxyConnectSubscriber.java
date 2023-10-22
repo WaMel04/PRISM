@@ -10,7 +10,11 @@ public class ProxyConnectSubscriber extends Subscriber {
         super("proxy_connect_subscriber", "proxy_connect", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                EventCaller.call("proxy_connect_event", message);
+                try {
+                    Class.forName("org.bukkit.plugin.java.JavaPlugin");
+                    EventCaller.call("proxy_connect_event", message);
+                } catch (ClassNotFoundException e) {
+                }
             }
         });
     }

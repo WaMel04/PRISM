@@ -7,6 +7,7 @@ import redis.clients.jedis.Jedis;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public interface PrismSerializable {
 
@@ -17,22 +18,24 @@ public interface PrismSerializable {
         return gson.toJson(this);
     }
 
-    default CompletableFuture<Void> load(String key) {
+    default CompletableFuture<Void> load(String key, long timeout, TimeUnit unit) {
         Gson gson = new Gson();
         String redisKey = "prism_data:" + getNameKey() + ":" + key;
 
-        return getFromRedisAsync(redisKey).thenCompose(data -> {
-            if (data != null) {
-                try {
-                    populateFromData(data, gson);
-                    return CompletableFuture.completedFuture(null);
-                } catch (Exception e) {
-                    return CompletableFuture.failedFuture(e);
-                }
-            } else {
-                return loadFromMysqlAndCache(key, gson);
-            }
-        });
+        return getFromRedisAsync(redisKey)
+                .thenCompose(data -> {
+                    if (data != null) {
+                        try {
+                            populateFromData(data, gson);
+                            return CompletableFuture.completedFuture(null);
+                        } catch (Exception e) {
+                            return CompletableFuture.failedFuture(e);
+                        }
+                    } else {
+                        return loadFromMysqlAndCache(key, gson);
+                    }
+                })
+                .orTimeout(timeout, unit);
     }
 
     private CompletableFuture<String> getFromRedisAsync(String key) {

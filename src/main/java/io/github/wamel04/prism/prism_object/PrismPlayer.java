@@ -1,5 +1,6 @@
 package io.github.wamel04.prism.prism_object;
 
+import com.google.gson.Gson;
 import io.github.wamel04.prism.PRISM;
 import io.github.wamel04.prism.requester.prism_player.*;
 import redis.clients.jedis.Jedis;
@@ -9,6 +10,38 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class PrismPlayer {
+
+    public static PrismPlayer getByUuid(UUID uuid) {
+        try (Jedis jedis = PRISM.getJedis()) {
+            for (String serverName : jedis.hkeys("prism:prism_object:prism_server_name_map")) {
+                String redisKey = "prism:prism_object:prism_player_uuid_map:" + serverName;
+
+                if (jedis.hexists(redisKey, uuid.toString())) {
+                    String data = jedis.hget(redisKey, uuid.toString());
+                    return new Gson().fromJson(data, PrismPlayer.class);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static PrismPlayer getByName(String nickname) {
+        try (Jedis jedis = PRISM.getJedis()) {
+            nickname = nickname.toLowerCase();
+
+            for (String serverName : jedis.hkeys("prism:prism_object:prism_server_name_map")) {
+                String redisKey = "prism:prism_object:prism_player_name_map:" + serverName;
+
+                if (jedis.hexists(redisKey, nickname)) {
+                    String data = jedis.hget(redisKey, nickname);
+                    return new Gson().fromJson(data, PrismPlayer.class);
+                }
+            }
+        }
+
+        return null;
+    }
 
     UUID uuid;
     String nickname;
@@ -68,11 +101,11 @@ public class PrismPlayer {
     }
 
     public void teleport(PrismLocation prismLocation) {
-        if (getPrismServer().equals(prismLocation.getPrismWorld().getPrismServer())) {
+        if (getPrismServer().getServerName().equals(prismLocation.getPrismWorld().getPrismServer().getServerName())) {
             PP_TeleportRequester.request(this, prismLocation);
         } else {
             try {
-                Void ignored = connect(prismLocation.getPrismWorld().getPrismServer()).get(3, TimeUnit.SECONDS);
+                connect(prismLocation.getPrismWorld().getPrismServer()).get(3, TimeUnit.SECONDS);
                 PP_TeleportRequester.request(this, prismLocation);
             } catch (Exception e) {
                 e.printStackTrace();

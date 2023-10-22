@@ -37,8 +37,10 @@ public class PrismPlayerListener implements Listener {
                 String data = gson.toJson(prismPlayer);
 
                 jedis.hset(UUID_MAP_REDIS_KEY, player.getUniqueId().toString(), data);
-                jedis.hset(NAME_MAP_REDIS_KEY, player.getName(), data);
+                jedis.hset(NAME_MAP_REDIS_KEY, player.getName().toLowerCase(), data);
                 jedis.hset(SERVER_MAP_REDIS_KEY, player.getUniqueId().toString(), BukkitInitializer.getPrismServer().getServerName());
+
+                jedis.publish("prism:pp_connect_receive_" + player.getUniqueId(), "Success");
             }
         }).exceptionally(ex -> {
             ex.printStackTrace();
@@ -53,7 +55,7 @@ public class PrismPlayerListener implements Listener {
                 Player player = event.getPlayer();
 
                 jedis.hdel(UUID_MAP_REDIS_KEY, player.getUniqueId().toString());
-                jedis.hdel(NAME_MAP_REDIS_KEY, player.getName());
+                jedis.hdel(NAME_MAP_REDIS_KEY, player.getName().toLowerCase());
             }
         }).exceptionally(ex -> {
             ex.printStackTrace();

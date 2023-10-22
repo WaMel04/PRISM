@@ -10,7 +10,11 @@ public class ServerChangeSubscriber extends Subscriber {
         super("server_change_subscriber", "server_change", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                EventCaller.call("server_change_event", message);
+                try {
+                    Class.forName("org.bukkit.plugin.java.JavaPlugin");
+                    EventCaller.call("server_change_event", message);
+                } catch (ClassNotFoundException e) {
+                }
             }
         });
     }

@@ -13,7 +13,7 @@ public class PP_TeleportRequester {
     public static void request(PrismPlayer prismPlayer, PrismLocation prismLocation) {
         CompletableFuture.runAsync(() -> {
             try (Jedis jedis = PRISM.getJedis()) {
-                jedis.publish("prism:pp_teleport_request", ProtocolMessageConvertor.convert(prismPlayer.getPrismServer(), prismPlayer.getUuid().toString(),
+                jedis.publish("prism:pp_teleport_request", ProtocolMessageConvertor.convert(prismPlayer.getPrismServer().getServerName(), prismPlayer.getUuid().toString(),
                         prismLocation.getPrismWorld().getWorldName(), prismLocation.getX(), prismLocation.getY(), prismLocation.getZ(),
                         prismLocation.getPitch(), prismLocation.getYaw()));
             }

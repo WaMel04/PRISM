@@ -40,4 +40,8 @@ public class ServerChangeEvent extends Event {
         return handlers;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
 }

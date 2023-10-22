@@ -35,22 +35,21 @@ public class ReceiverRegister {
             Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
             getFileMethod.setAccessible(true);
             File file = (File) getFileMethod.invoke(pluginObject);
-            JarFile jarFile = new JarFile(file);
 
-            for (Enumeration<JarEntry> entry = jarFile.entries(); entry.hasMoreElements();) {
-                JarEntry jarEntry = entry.nextElement();
-                String name = jarEntry.getName().replace("/", ".");
+            try (JarFile jarFile = new JarFile(file)) {
+                Enumeration<JarEntry> entries = jarFile.entries();
 
-                if (name.startsWith(packageName)) {
-                    if (name.endsWith(".class") && !name.contains("$")) { // 내부 클래스 포함 X
-                        classes.add(Class.forName(name.substring(0, name.length() - 6)));
-                        continue;
-                    } if (!name.endsWith(".class")) { // 재귀적으로 해당 패키지에 위치한 모든 클래스를 불러 옴
-                        classes.addAll(getClasses(name));
+                while (entries.hasMoreElements()) {
+                    JarEntry entry = entries.nextElement();
+                    String entryName = entry.getName().replace("/", ".");
+
+                    if (entryName.endsWith(".class") && entryName.startsWith(packageName + ".") && !entryName.contains("$")) {
+                        String className = entryName.substring(0, entryName.length() - 6); // ".class" 제거
+                        Class<?> clazz = Class.forName(className);
+                        classes.add(clazz);
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
