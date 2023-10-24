@@ -1,7 +1,7 @@
 package io.github.wamel04.prism.bukkit.event;
 
-import io.github.wamel04.prism.prism_object.PrismPlayer;
-import io.github.wamel04.prism.prism_object.PrismServer;
+import io.github.wamel04.prism.prism_object.ingame.entity.PrismPlayer;
+import io.github.wamel04.prism.prism_object.ingame.server.PrismServer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;

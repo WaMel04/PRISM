@@ -14,7 +14,7 @@ public class PP_ConnectReceiver extends Subscriber {
         super("pp_connect_receiver", "pp_connect_request_proxy", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                String[] split = message.split("\\|");
+                String[] split = message.split("\\|\\|\\|");
 
                 ServerInfo serverInfo = ProxyInitializer.getInstance().getProxy().getServerInfo(split[0]);
                 ProxiedPlayer player = ProxyInitializer.getInstance().getProxy().getPlayer(UUID.fromString(split[1]));

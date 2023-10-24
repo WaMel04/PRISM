@@ -5,7 +5,7 @@ import io.github.wamel04.prism.bukkit.mysql.DbConnection;
 import io.github.wamel04.prism.bukkit.mysql.MysqlConfig;
 import io.github.wamel04.prism.bukkit.receiver_register.ReceiverRegister;
 import io.github.wamel04.prism.bukkit.redis.RedisConfig;
-import io.github.wamel04.prism.prism_object.PrismServer;
+import io.github.wamel04.prism.prism_object.ingame.server.PrismServer;
 import io.github.wamel04.prism.prism_object.subscriber_register.BukkitPrismSubscriberRegister;
 import io.github.wamel04.prism.subscriber.Subscriber;
 import org.bukkit.plugin.java.JavaPlugin;

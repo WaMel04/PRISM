@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PP_SendMessageReceiver extends Subscriber {
+public class PP_SendActionBarReceiver extends Subscriber {
 
-    public PP_SendMessageReceiver() {
-        super("pp_send_message_receiver", "pp_send_message_request", new SubscriberRunnable() {
+    public PP_SendActionBarReceiver() {
+        super("pp_send_actionbar_receiver", "pp_send_actionbar_request", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
                 String[] split = message.split("\\|\\|\\|");
@@ -23,7 +23,7 @@ public class PP_SendMessageReceiver extends Subscriber {
                         return;
 
                     String context = split[2];
-                    player.sendMessage(context);
+                    player.sendActionBar(context);
                 }
             }
         });

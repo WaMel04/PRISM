@@ -18,14 +18,14 @@ public class PP_GetLocationReceiver extends Subscriber {
         super("pp_get_location_receiver", "pp_get_location_request", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                String[] split = message.split("\\|");
+                String[] split = message.split("\\|\\|\\|");
 
                 if (split[0].equals(BukkitInitializer.getPrismServer().getServerName())) {
                     Player player = Bukkit.getPlayer(UUID.fromString(split[1]));
 
                     try (Jedis jedis = PRISM.getJedis()) {
                         if (player == null) {
-                            jedis.publish("prism:pp_get_location_receive_" + split[1], "null|0|0|0|0.0|0.0");
+                            jedis.publish("prism:pp_get_location_receive_" + split[1], "null|||0|||0|||0|||0.0|||0.0");
                             jedis.publish("prism:pp_get_location_receive_" + split[1], ProtocolMessageConvertor.convert("null", 0, 0, 0, 0.0f, 0.0f));
                         } else {
                             Location location = player.getLocation();

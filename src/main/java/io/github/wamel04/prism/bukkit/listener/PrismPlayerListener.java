@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import io.github.wamel04.prism.PRISM;
 import io.github.wamel04.prism.bukkit.BukkitInitializer;
 import io.github.wamel04.prism.bukkit.event.ProxyDisconnectEvent;
-import io.github.wamel04.prism.prism_object.PrismPlayer;
+import io.github.wamel04.prism.prism_object.ingame.entity.PrismPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

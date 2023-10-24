@@ -16,7 +16,7 @@ public class PP_GetWorldReceiver extends Subscriber {
         super("pp_get_world_receiver", "pp_get_world_request", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
-                String[] split = message.split("\\|");
+                String[] split = message.split("\\|\\|\\|");
 
                 if (split[0].equals(BukkitInitializer.getPrismServer().getServerName())) {
                     Player player = Bukkit.getPlayer(UUID.fromString(split[1]));

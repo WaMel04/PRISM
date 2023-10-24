@@ -1,12 +1,15 @@
-package io.github.wamel04.prism.prism_object;
+package io.github.wamel04.prism.prism_object.ingame.server;
 
 import com.google.gson.Gson;
 import io.github.wamel04.prism.PRISM;
+import io.github.wamel04.prism.prism_object.ingame.entity.PrismPlayer;
+import io.github.wamel04.prism.requester.prism_server.PS_GetIsWhitelistRequester;
 import redis.clients.jedis.Jedis;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class PrismServer {
 
@@ -37,6 +40,19 @@ public class PrismServer {
                 return gson.fromJson(data, PrismServer.class);
             }
         }
+    }
+
+    public static List<PrismServer> getServerList() {
+        Gson gson = new Gson();
+        List<PrismServer> servers = new LinkedList<>();
+
+        try (Jedis jedis = PRISM.getJedis()) {
+            for (String data : jedis.hvals(NAME_MAP_REDIS_KEY)) {
+                servers.add(gson.fromJson(data, PrismServer.class));
+            }
+        }
+
+        return servers;
     }
 
     String serverName;
@@ -90,5 +106,22 @@ public class PrismServer {
         return players;
     }
 
+    public boolean isWhitelist() {
+        try {
+            return PS_GetIsWhitelistRequester.request(this).get(3, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isOnline() {
+        try {
+            return PS_GetIsWhitelistRequester.request(this).get(3, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

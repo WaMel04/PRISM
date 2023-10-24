@@ -1,4 +1,6 @@
-package io.github.wamel04.prism.prism_object;
+package io.github.wamel04.prism.prism_object.ingame.world;
+
+import io.github.wamel04.prism.prism_object.ingame.server.PrismServer;
 
 public class PrismWorld {
 

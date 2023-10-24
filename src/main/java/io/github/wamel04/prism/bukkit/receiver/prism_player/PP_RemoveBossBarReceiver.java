@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PP_SendMessageReceiver extends Subscriber {
+public class PP_RemoveBossBarReceiver extends Subscriber {
 
-    public PP_SendMessageReceiver() {
-        super("pp_send_message_receiver", "pp_send_message_request", new SubscriberRunnable() {
+    public PP_RemoveBossBarReceiver() {
+        super("pp_remove_bossbar_receiver", "pp_remove_bossbar_request", new SubscriberRunnable() {
             @Override
             public void run(String channelName, String message) {
                 String[] split = message.split("\\|\\|\\|");
@@ -22,11 +22,18 @@ public class PP_SendMessageReceiver extends Subscriber {
                     if (player == null)
                         return;
 
-                    String context = split[2];
-                    player.sendMessage(context);
+                    String id = split[2];
+
+                    if (PP_SendBossBarReceiver.playerBarMap.containsKey(player.getUniqueId())) {
+                        PP_SendBossBarReceiver.PlayerBarData barData = PP_SendBossBarReceiver.playerBarMap.get(player.getUniqueId());
+                        barData.remove(id);
+
+                        PP_SendBossBarReceiver.playerBarMap.put(player.getUniqueId(), barData);
+                    }
                 }
             }
         });
     }
+
 
 }

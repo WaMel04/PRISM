@@ -1,6 +1,6 @@
 package io.github.wamel04.prism.proxy;
 
-import io.github.wamel04.prism.prism_object.PrismServer;
+import io.github.wamel04.prism.prism_object.ingame.server.PrismServer;
 import io.github.wamel04.prism.prism_object.subscriber_register.ProxyPrismSubscriberRegister;
 import io.github.wamel04.prism.proxy.listener.ProxyBukkitEventListener;
 import io.github.wamel04.prism.proxy.listener.ProxyDatabaseListener;

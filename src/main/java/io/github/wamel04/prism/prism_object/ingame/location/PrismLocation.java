@@ -1,4 +1,6 @@
-package io.github.wamel04.prism.prism_object;
+package io.github.wamel04.prism.prism_object.ingame.location;
+
+import io.github.wamel04.prism.prism_object.ingame.world.PrismWorld;
 
 public class PrismLocation {
 

@@ -1,7 +1,11 @@
-package io.github.wamel04.prism.prism_object;
+package io.github.wamel04.prism.prism_object.ingame.entity;
 
 import com.google.gson.Gson;
 import io.github.wamel04.prism.PRISM;
+import io.github.wamel04.prism.prism_object.ingame.boss.PrismBossBar;
+import io.github.wamel04.prism.prism_object.ingame.location.PrismLocation;
+import io.github.wamel04.prism.prism_object.ingame.server.PrismServer;
+import io.github.wamel04.prism.prism_object.ingame.world.PrismWorld;
 import io.github.wamel04.prism.requester.prism_player.*;
 import redis.clients.jedis.Jedis;
 
@@ -83,7 +87,7 @@ public class PrismPlayer {
 
     public PrismLocation getPrismLocation() {
         try {
-            String[] split = PP_GetLocationRequester.request(this).get(3, TimeUnit.SECONDS).split("\\|");
+            String[] split = PP_GetLocationRequester.request(this).get(3, TimeUnit.SECONDS).split("\\|\\|\\|");
 
             PrismWorld prismWorld = new PrismWorld(getPrismServer(), split[0]);
             double x = Double.parseDouble(split[1]);
@@ -113,8 +117,25 @@ public class PrismPlayer {
         }
     }
 
+
     public void sendMessage(String message) {
         PP_SendMessageRequester.request(this, message);
+    }
+
+    public void sendTitle(String title, String subtitle, int fadein, int duration, int fadeout) {
+        PP_SendTitleRequester.request(this, title, subtitle, fadeout, duration, fadeout);
+    }
+
+    public void sendActionBar(String context) {
+        PP_SendActionBarRequester.request(this, context);
+    }
+
+    public void sendBossBar(PrismBossBar bossBar) {
+        PP_SendBossBarRequester.request(this, bossBar);
+    }
+
+    public void removeBossBar(String id) {
+        PP_RemoveBossBarRequester.request(this, id);
     }
 
 }

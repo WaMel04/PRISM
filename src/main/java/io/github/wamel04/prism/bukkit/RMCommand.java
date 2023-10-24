@@ -1,7 +1,7 @@
 package io.github.wamel04.prism.bukkit;
 
-import io.github.wamel04.prism.prism_object.PrismLocation;
-import io.github.wamel04.prism.prism_object.PrismPlayer;
+import io.github.wamel04.prism.prism_object.ingame.entity.PrismPlayer;
+import io.github.wamel04.prism.prism_object.ingame.location.PrismLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
